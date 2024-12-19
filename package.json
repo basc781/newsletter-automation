@@ -1,0 +1,29 @@
+{
+  "name": "scraper_project_news",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze-hn": "node src/diagnostics/hnDigestAnalyzer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.709.0",
+    "@aws-sdk/lib-dynamodb": "^3.709.0",
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "date-fns-tz": "^3.2.0",
+    "dotenv": "^16.4.5",
+    "imapflow": "^1.0.169",
+    "mailparser": "^3.7.1",
+    "nodemailer": "^6.9.16",
+    "openai": "^4.73.0",
+    "puppeteer": "^23.9.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.17.0"
+  }
+}
