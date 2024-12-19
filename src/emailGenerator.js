@@ -10,6 +10,7 @@ class EmailGenerator {
         this.openai = new OpenAI({
             apiKey: process.env.OPENAI_API_KEY
         });
+        //Comment
         
         const client = new DynamoDBClient({
             region: 'eu-north-1',
