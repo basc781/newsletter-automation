@@ -15,7 +15,7 @@ async function main() {
     try {
         console.log('Starting email scraping process...');
         await scrapeEmails();
-    
+        // EENS KIJKEN OF DIE YML werkt
         const generator = new EmailGenerator();
         const emailContent = await generator.generateEmail();
         
