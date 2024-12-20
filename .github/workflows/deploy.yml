@@ -11,6 +11,7 @@ env:
   ECR_REPOSITORY: email-generator
   ECR_REGISTRY: 430118838226.dkr.ecr.eu-north-1.amazonaws.com
   IMAGE_NAME: automated-emails-mach8
+  ECS_TASK_DEFINITION: email-processor-task
 
 jobs:
   build-and-deploy:
@@ -45,4 +46,21 @@ jobs:
       - name: Tag and push image to Amazon ECR
         run: |
           docker tag ${{ env.IMAGE_NAME }}:latest ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
-          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest 
+          docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} \
+          --query taskDefinition > task-definition.json
+
+      - name: Update task definition with new image
+        run: |
+          # Update the image in the task definition
+          jq --arg IMAGE "${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest" \
+             '.containerDefinitions[0].image = $IMAGE' \
+             task-definition.json > updated-task-definition.json
+
+      - name: Register new task definition
+        run: |
+          aws ecs register-task-definition \
+            --cli-input-json file://updated-task-definition.json
