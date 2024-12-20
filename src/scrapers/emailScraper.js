@@ -23,7 +23,7 @@ const imapConfig = {
 function formatCETDate(date) {
     return formatInTimeZone(date, 'Europe/Amsterdam', "yyyy-MM-dd'T'HH:mm:ssXXX");
 }
-
+ //DIT IS EEN NIEUWE TEST 
 async function scrapeEmails() {
     const client = new ImapFlow(imapConfig);
     const standardProcessor = new EmailContentProcessor();
