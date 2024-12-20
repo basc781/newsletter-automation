@@ -71,26 +71,18 @@ jobs:
 
       - name: Update scheduled task
         run: |
-          # Create target JSON with the new task definition
-          cat << EOF > updated-target.json
-          [{
-            "Id": "weekly-email-digest",
-            "Arn": "arn:aws:ecs:${{ env.AWS_REGION }}:430118838226:cluster/default",
-            "RoleArn": "arn:aws:iam::430118838226:role/ecsEventsRole",
-            "EcsParameters": {
-              "TaskDefinitionArn": "${{ steps.register-task-def.outputs.task_def_arn }}",
-              "TaskCount": 1,
-              "LaunchType": "FARGATE",
-              "NetworkConfiguration": {
-                "awsvpcConfiguration": {
-                  "Subnets": ["subnet-0daf36b2ec05da257"],
-                  "SecurityGroups": ["sg-03256fcc149866a4a"],
-                  "AssignPublicIp": "ENABLED"
-                }
-              }
-            }
-          }]
-          EOF
+          # Get current target configuration
+          CURRENT_TARGET=$(aws events list-targets-by-rule \
+            --rule ${{ env.SCHEDULED_RULE }} \
+            --query 'Targets[0]' \
+            --output json)
+          
+          # Update only the task definition ARN in the current configuration
+          UPDATED_TARGET=$(echo $CURRENT_TARGET | jq --arg ARN "${{ steps.register-task-def.outputs.task_def_arn }}" \
+            '.EcsParameters.TaskDefinitionArn = $ARN')
+          
+          # Save to temp file
+          echo "[$UPDATED_TARGET]" > updated-target.json
           
           # Update the target
           aws events put-targets \
