@@ -12,6 +12,7 @@ env:
   ECR_REGISTRY: 430118838226.dkr.ecr.eu-north-1.amazonaws.com
   IMAGE_NAME: automated-emails-mach8
   ECS_TASK_DEFINITION: email-processor-task
+  SCHEDULED_RULE: weekly-email-digest
 
 jobs:
   build-and-deploy:
@@ -60,6 +61,27 @@ jobs:
              task-definition.json > updated-task-definition.json
 
       - name: Register new task definition
+        id: register-task-def
         run: |
-          aws ecs register-task-definition \
-            --cli-input-json file://updated-task-definition.json
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://updated-task-definition.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "::set-output name=task_def_arn::$NEW_TASK_DEF_ARN"
+
+      - name: Update scheduled task
+        run: |
+          # Get current target
+          aws events list-targets-by-rule \
+            --rule ${{ env.SCHEDULED_RULE }} \
+            --query 'Targets[0]' > current-target.json
+
+          # Update target with new task definition
+          jq --arg TASK_DEF "${{ steps.register-task-def.outputs.task_def_arn }}" \
+             '.EcsParameters.TaskDefinitionArn = $TASK_DEF' \
+             current-target.json > updated-target.json
+
+          # Update the EventBridge rule target
+          aws events put-targets \
+            --rule ${{ env.SCHEDULED_RULE }} \
+            --targets file://updated-target.json
