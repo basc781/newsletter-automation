@@ -79,7 +79,7 @@ jobs:
           
           # Create updated target JSON with proper escaping
           UPDATED_TARGET=$(echo $CURRENT_TARGET | jq --arg ARN "${{ steps.register-task-def.outputs.task_def_arn }}" \
-            '.EcsParameters.TaskDefinitionArn = $ARN')
+            '.EcsParameters.TaskDefinitionArn = $ARN | .Id = "EmailProcessorTarget" | .Arn = "arn:aws:ecs:'${{ env.AWS_REGION }}':${{ github.event.repository.owner.id }}:cluster/default"')
           
           # Save to temp file with proper JSON formatting
           echo "[${UPDATED_TARGET}]" > updated-target.json
