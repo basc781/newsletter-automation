@@ -83,8 +83,8 @@ jobs:
               "LaunchType": "FARGATE",
               "NetworkConfiguration": {
                 "awsvpcConfiguration": {
-                  "Subnets": ["subnet-0ff714f6863f1c916"],
-                  "SecurityGroups": ["sg-0c4d3e0d1e5d8c8c1"],
+                  "Subnets": ["subnet-0daf36b2ec05da257"],
+                  "SecurityGroups": ["sg-03256fcc149866a4a"],
                   "AssignPublicIp": "ENABLED"
                 }
               }
