@@ -71,28 +71,20 @@ jobs:
 
       - name: Update scheduled task
         run: |
-          # Get current target configuration
-          TARGET_ID=$(aws events list-targets-by-rule \
+          # Get current target
+          CURRENT_TARGET=$(aws events list-targets-by-rule \
             --rule ${{ env.SCHEDULED_RULE }} \
-            --query 'Targets[0].Id' \
-            --output text)
+            --output json \
+            --query 'Targets[0]')
           
-          # Create new target configuration
-          aws events list-targets-by-rule \
-            --rule ${{ env.SCHEDULED_RULE }} \
-            --query 'Targets[0]' > target.json
+          # Create updated target JSON with proper escaping
+          UPDATED_TARGET=$(echo $CURRENT_TARGET | jq --arg ARN "${{ steps.register-task-def.outputs.task_def_arn }}" \
+            '.EcsParameters.TaskDefinitionArn = $ARN')
           
-          # Update task definition ARN in target configuration
-          jq --arg ARN "${{ steps.register-task-def.outputs.task_def_arn }}" \
-             '.EcsParameters.TaskDefinitionArn = $ARN' \
-             target.json > updated-target.json
+          # Save to temp file with proper JSON formatting
+          echo "[${UPDATED_TARGET}]" > updated-target.json
           
-          # Remove targets
-          aws events remove-targets \
-            --rule ${{ env.SCHEDULED_RULE }} \
-            --ids $TARGET_ID
-          
-          # Add updated target
+          # Update the target
           aws events put-targets \
             --rule ${{ env.SCHEDULED_RULE }} \
             --targets file://updated-target.json
