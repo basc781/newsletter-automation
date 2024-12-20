@@ -67,21 +67,32 @@ jobs:
             --cli-input-json file://updated-task-definition.json \
             --query 'taskDefinition.taskDefinitionArn' \
             --output text)
-          echo "::set-output name=task_def_arn::$NEW_TASK_DEF_ARN"
+          echo "task_def_arn=${NEW_TASK_DEF_ARN}" >> $GITHUB_OUTPUT
 
       - name: Update scheduled task
         run: |
-          # Get current target
+          # Get current target configuration
+          TARGET_ID=$(aws events list-targets-by-rule \
+            --rule ${{ env.SCHEDULED_RULE }} \
+            --query 'Targets[0].Id' \
+            --output text)
+          
+          # Create new target configuration
           aws events list-targets-by-rule \
             --rule ${{ env.SCHEDULED_RULE }} \
-            --query 'Targets[0]' > current-target.json
-
-          # Update target with new task definition
-          jq --arg TASK_DEF "${{ steps.register-task-def.outputs.task_def_arn }}" \
-             '.EcsParameters.TaskDefinitionArn = $TASK_DEF' \
-             current-target.json > updated-target.json
-
-          # Update the EventBridge rule target
+            --query 'Targets[0]' > target.json
+          
+          # Update task definition ARN in target configuration
+          jq --arg ARN "${{ steps.register-task-def.outputs.task_def_arn }}" \
+             '.EcsParameters.TaskDefinitionArn = $ARN' \
+             target.json > updated-target.json
+          
+          # Remove targets
+          aws events remove-targets \
+            --rule ${{ env.SCHEDULED_RULE }} \
+            --ids $TARGET_ID
+          
+          # Add updated target
           aws events put-targets \
             --rule ${{ env.SCHEDULED_RULE }} \
             --targets file://updated-target.json
