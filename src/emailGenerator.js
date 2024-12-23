@@ -402,10 +402,11 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
 
 // `;
             const OpenAiformatting = await this.openai.chat.completions.create({
-                model: "o1-preview",
+                model: "o1",
                 messages: [{ role: "user", content: prompt }],
                 temperature: 1,
             });
+            console.log(OpenAiformatting.choices[0].message.content);
 
 
             const emailContent = OpenAiformatting.choices[0].message.content;            
