@@ -10,6 +10,12 @@ class EmailContentProcessorHN {
 
     async splitEmailIntoArticles(emailContent, subject, author) {
         try {
+            console.log('Starting HN email processing:', {
+                subject: subject,
+                author: author,
+                contentLength: emailContent?.length
+            });
+
             const response = await this.openai.chat.completions.create({
                 model: "gpt-4o-mini",
                 messages: [{
@@ -34,33 +40,74 @@ class EmailContentProcessorHN {
                     `
                 }],
                 temperature: 0.3,
+            }).catch(error => {
+                console.error('OpenAI API Error in HN processor:', {
+                    message: error.message,
+                    type: error.type,
+                    status: error.status,
+                    code: error.code,
+                    stack: error.stack
+                });
+                throw error;
             });
 
             let jsonString = response.choices[0].message.content.trim();
-            console.log(response.usage + response.model);
-            // Clean up the response
-            jsonString = jsonString
-                .replace(/```json\n?/g, '')
-                .replace(/```\n?/g, '');
+            console.log('OpenAI Response received:', {
+                modelUsed: response.model,
+                tokensUsed: response.usage,
+                responseLength: jsonString.length
+            });
 
-            const parsedResponse = JSON.parse(jsonString);
-            
-            // Validate URLs and limit to first 5 articles
-            parsedResponse.articles = parsedResponse.articles
-                .filter(article => {
-                    const url = article.url;
-                    return url && 
-                           url.includes('/') && 
-                           !url.endsWith('.com') && 
-                           !url.endsWith('.org') && 
-                           !url.endsWith('.net');
-                })
-                .slice(0, 5); // Behoud alleen de eerste 5 artikelen
+            try {
+                jsonString = jsonString
+                    .replace(/```json\n?/g, '')
+                    .replace(/```\n?/g, '');
+                const parsedResponse = JSON.parse(jsonString);
 
-            return parsedResponse.articles;
+                console.log('Successfully parsed HN response:', {
+                    articlesFound: parsedResponse.articles?.length || 0
+                });
+
+                // Bestaande URL validatie en filtering
+                parsedResponse.articles = parsedResponse.articles
+                    .filter(article => {
+                        const url = article.url;
+                        const isValid = url && 
+                               url.includes('/') && 
+                               !url.endsWith('.com') && 
+                               !url.endsWith('.org') && 
+                               !url.endsWith('.net');
+                        
+                        if (!isValid) {
+                            console.warn('Invalid URL filtered out:', url);
+                        }
+                        return isValid;
+                    })
+                    .slice(0, 5);
+
+                console.log('Final filtered articles:', {
+                    count: parsedResponse.articles.length
+                });
+
+                return parsedResponse.articles;
+
+            } catch (parseError) {
+                console.error('JSON Parsing Error in HN processor:', {
+                    error: parseError.message,
+                    rawResponse: jsonString.substring(0, 200), // Eerste 200 karakters van de response
+                    stack: parseError.stack
+                });
+                throw parseError;
+            }
 
         } catch (error) {
-            console.error('Error processing HN Digest email:', error);
+            console.error('Fatal error in HN processor:', {
+                error: error.message,
+                type: error.constructor.name,
+                stack: error.stack,
+                subject: subject,
+                author: author
+            });
             return [];
         }
     }

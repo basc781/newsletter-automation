@@ -7,15 +7,8 @@ async function classifyContent(content, title, url) {
     try {
         console.log(`Classifying article: ${title}`);
 
-        const prompt = `Je bent een AI assistent die nieuwsartikelen filtert en analyseert. Review het artikel tussen de '——— begin/eind artikel ———' tags en bepaal de relevantie voor deze content formats:
+        const prompt = `Je bent een AI assistent die nieuwsartikelen filtert en analyseert. De focus ligt op artikellen die gaan over Generative AI tools en research ontwikellen probeer andere dingen er dus uit te fileren. Review het artikel tussen de '——— begin/eind artikel ———' tags en bepaal de relevantie voor deze content formats:
 
-Techdive Podcast
-
-30-40 minuten discussie over innovatie/tech
-Gericht op niet-technisch publiek
-Koppelt aan recente tech ontwikkelingen
-Voorbeelden: SpaceX launches, OpenAI releases
-Host + 2 gasten format
 
 News Flash
 
@@ -54,7 +47,9 @@ Alleen artikelen vermelden die direct relevant zijn voor bovenstaande formats. A
             Artikel titel: ${title}
             Content: ${content}
             url: ${url}
-——— eind artikel ———`;
+——— eind artikel ———
+je mag best streng zijn en alleen artikelen vermelden die relevant zijn voor de bovenstaande formats en echt tof en interessant zijn.
+`;
 
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
