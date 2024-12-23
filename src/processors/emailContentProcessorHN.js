@@ -45,15 +45,17 @@ class EmailContentProcessorHN {
 
             const parsedResponse = JSON.parse(jsonString);
             
-            // Validate URLs before returning
-            parsedResponse.articles = parsedResponse.articles.filter(article => {
-                const url = article.url;
-                return url && 
-                       url.includes('/') && 
-                       !url.endsWith('.com') && 
-                       !url.endsWith('.org') && 
-                       !url.endsWith('.net');
-            });
+            // Validate URLs and limit to first 5 articles
+            parsedResponse.articles = parsedResponse.articles
+                .filter(article => {
+                    const url = article.url;
+                    return url && 
+                           url.includes('/') && 
+                           !url.endsWith('.com') && 
+                           !url.endsWith('.org') && 
+                           !url.endsWith('.net');
+                })
+                .slice(0, 5); // Behoud alleen de eerste 5 artikelen
 
             return parsedResponse.articles;
 
