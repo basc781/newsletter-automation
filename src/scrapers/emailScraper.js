@@ -119,14 +119,25 @@ async function scrapeEmails() {
                                 }
                             }
 
-                            // Classificeer het artikel
+                            // Voeg timeout tracking toe
+                            console.log('Starting processing of article:', {
+                                title: article.title,
+                                timestamp: new Date().toISOString()
+                            });
+
                             const insights = await insightsClassifier.classifyContent(
                                 article.content,
                                 article.title,
                                 articleUrl
-                            );
+                            ).catch(error => {
+                                console.error('Classification error:', {
+                                    error: error.message,
+                                    title: article.title,
+                                    stack: error.stack
+                                });
+                                throw error;
+                            });
 
-                            // Ga verder met het opslaan van het artikel
                             const result = await db.putItem('news_articles', {
                                 id: Date.now().toString(),
                                 date: new Date().toISOString().split('T')[0],
@@ -136,12 +147,29 @@ async function scrapeEmails() {
                                 url: articleUrl,
                                 source: mail.from.text,
                                 insights: insights,
+                            }).catch(error => {
+                                console.error('Database error:', {
+                                    error: error.message,
+                                    title: article.title,
+                                    stack: error.stack
+                                });
+                                throw error;
                             });
 
-                            console.log(`Article processed and classified: ${article.title}`);
+                            console.log('Article processing completed:', {
+                                title: article.title,
+                                timestamp: new Date().toISOString()
+                            });
 
                         } catch (error) {
-                            console.error(`Error processing article: ${error}`);
+                            // Log error maar ga door met volgende artikel
+                            console.error('Error processing article:', {
+                                error: error.message,
+                                title: article.title,
+                                stack: error.stack,
+                                timestamp: new Date().toISOString()
+                            });
+                            continue;
                         }
                     }
 
@@ -158,7 +186,13 @@ async function scrapeEmails() {
         }
 
     } catch (error) {
-        console.error('Error in email scraper:', error);
+        console.error('Fatal scraping error:', {
+            error: error.message,
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
+        // Gooi de error door zodat de main process dit kan afhandelen
+        throw error;
     } finally {
         console.log('Closing connections...');
         console.log('Connections closed');
