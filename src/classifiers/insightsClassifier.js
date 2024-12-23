@@ -5,7 +5,10 @@ const openai = new OpenAI({
 
 async function classifyContent(content, title, url) {
     try {
-        console.log(`Classifying article: ${title}`);
+        console.log('Starting classification:', {
+            title,
+            timestamp: new Date().toISOString()
+        });
 
         const prompt = `Je bent een AI assistent die nieuwsartikelen filtert en analyseert. De focus ligt op artikellen die gaan over Generative AI tools en research ontwikellen probeer andere dingen er dus uit te fileren. Review het artikel tussen de '——— begin/eind artikel ———' tags en bepaal de relevantie voor deze content formats:
 
@@ -51,7 +54,7 @@ Alleen artikelen vermelden die direct relevant zijn voor bovenstaande formats. A
 je mag best streng zijn en alleen artikelen vermelden die relevant zijn voor de bovenstaande formats en echt tof en interessant zijn.
 `;
 
-        const completion = await openai.chat.completions.create({
+        const response = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
                 { 
@@ -60,14 +63,34 @@ je mag best streng zijn en alleen artikelen vermelden die relevant zijn voor de 
                 }
             ],
             temperature: 0.7,
+        }).catch(error => {
+            console.error('OpenAI API Error:', {
+                error: error.message,
+                title,
+                type: error.type,
+                stack: error.stack
+            });
+            throw error;
         });
 
-        console.log(`Classification completed for: ${title}`);
-        return completion.choices[0].message.content.trim();
+        console.log('Classification completed:', {
+            title,
+            modelUsed: response.model,
+            tokensUsed: response.usage,
+            timestamp: new Date().toISOString()
+        });
+
+        return response.choices[0].message.content;
 
     } catch (error) {
-        console.error('Error classifying content:', error);
-        return "NIET RELEVANT - Error tijdens classificatie";
+        console.error('Classification error:', {
+            error: error.message,
+            title,
+            url,
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
+        throw error; // Gooi door zodat de aanroeper kan beslissen wat te doen
     }
 }
 

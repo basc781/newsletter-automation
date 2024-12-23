@@ -13,9 +13,33 @@ const { sendEmail } = require('./emailSender');
 
 async function main() {
     try {
-        console.log('Starting email scraping process...');
+        console.log('Starting process:', {
+            timestamp: new Date().toISOString(),
+            nodeVersion: process.version,
+            memory: process.memoryUsage()
+        });
+
+        // Voeg unhandled rejection handler toe
+        process.on('unhandledRejection', (reason, promise) => {
+            console.error('Unhandled Rejection at:', {
+                promise: promise,
+                reason: reason,
+                stack: reason.stack,
+                timestamp: new Date().toISOString()
+            });
+        });
+
+        // Voeg uncaught exception handler toe
+        process.on('uncaughtException', (error) => {
+            console.error('Uncaught Exception:', {
+                error: error.message,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            });
+        });
+
         await scrapeEmails();
-        // EENS KIJKEN OF DIE YML werkt
+        
         const generator = new EmailGenerator();
         const emailContent = await generator.generateEmail();
         
@@ -24,10 +48,18 @@ async function main() {
         }
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Fatal error in main process:', {
+            error: error.message,
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+        });
+        // Zorg dat de process exit code niet-nul is bij errors
+        process.exitCode = 1;
     } finally {
-        console.log('All operations completed');
-        process.exit(0);  // We kunnen direct afsluiten
+        console.log('Process completing:', {
+            timestamp: new Date().toISOString(),
+            memory: process.memoryUsage()
+        });
     }
 }
 

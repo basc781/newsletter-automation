@@ -105,28 +105,49 @@ async function updateItem(tableName, id, updates) {
 
 async function putItem(tableName, item) {
     try {
+        console.log('Starting DB operation:', {
+            operation: 'putItem',
+            tableName,
+            itemId: item.id,
+            timestamp: new Date().toISOString()
+        });
+
         const command = new PutCommand({
             TableName: tableName,
             Item: {
                 ...item,
-                // Zorg ervoor dat id en date als strings worden opgeslagen
                 id: item.id.toString(),
                 date: item.date.toString()
             }
         });
 
-        console.log('Putting item:', {
-            tableName,
-            id: item.id,
-            date: item.date
+        const result = await docClient.send(command).catch(error => {
+            console.error('DynamoDB Error:', {
+                error: error.message,
+                tableName,
+                itemId: item.id,
+                errorCode: error.code,
+                stack: error.stack
+            });
+            throw error;
         });
 
-        return await docClient.send(command);
+        console.log('DB operation completed:', {
+            operation: 'putItem',
+            tableName,
+            itemId: item.id,
+            timestamp: new Date().toISOString()
+        });
+
+        return result;
+
     } catch (error) {
-        console.error('Put failed:', {
+        console.error('Database operation failed:', {
             error: error.message,
             tableName,
-            item
+            itemId: item.id,
+            stack: error.stack,
+            timestamp: new Date().toISOString()
         });
         throw error;
     }
