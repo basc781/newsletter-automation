@@ -239,12 +239,7 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>STAY AHEAD OF THE CURVE</h1>
-            <p>[WEEKNUMMER] - [DATUM]</p>
-        </div>
-
+    <div class="container">        
         <!-- MAIN SECTION -->
         <div class="section">
             <div class="section-title">
@@ -284,7 +279,10 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
             });
 
 
-            const emailContent = OpenAiformatting.choices[0].message.content;            
+            const emailContent = OpenAiformatting.choices[0].message.content
+                .replace(/^```html\s*/i, '') // Verwijder opening ```html
+                .replace(/```\s*$/i, '')     // Verwijder closing ```
+                .trim();                     // Verwijder extra whitespace
             return emailContent;
 
         } catch (error) {
