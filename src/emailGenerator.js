@@ -81,19 +81,16 @@ Inzicht: ${article.insights}
 `).join('\n---\n');
 
             const prompt = `
-Je bent een Innovation Manager die een email samenstelt voor het MACH8 team.
-Deze email moet informeren over de meest interessante tech ontwikkelingen.
+Je bent een Hans de AI innovator bij MACH8 die een email samenstelt voor het MACH8 team.
+Deze email moet informeren over de meest interessante tech ontwikkelingen met een focus op AI.
 
 Hier zijn de relevante artikelen en inzichten:
 
 ${articlesList}
 
 Genereer een professionele maar toegankelijke email die:
-1. Begint met een korte intro over de belangrijkste trends deze week
-2. De artikelen groepeert per type (News Flash / Creative Lab / Tech Dive)
-3. Per artikel een korte, pakkende beschrijving geeft
-4. Per artikel een link naar de bron toevoegd 
-5. Per artikel inhoudelijk voorbeeld gevene voor dat specifieke format van MACH8 
+1. Begint met een korte tekstuele intro over de belangrijkste trends deze week
+2. Voor elk artikel dat benoemd word ALTIJD de linkt naar de bron toevoegd
 
 Gebruik deze stijl:
 - Informeel maar professioneel
@@ -101,15 +98,7 @@ Gebruik deze stijl:
 - Maak duidelijk waarom iets interessant is voor MACH8
 - Voeg relevante emoji's toe voor visuele structuur
 
-Hieronder meer uitleg over de groeperingen. De mail is namelijk ter inspiratie om de volgende formats mee te kunnen produceren:
-Functie & Context:
-
-Innovatie manager bij MACH8
-Focus op experimenteren met nieuwste technologieën
-Twee hoofdpilaren: Marketing en Product
-Produceert content voor niet-technisch publiek met interesse in tech
-
-Content Formats:
+Content Formats die wij maken:
 
 Creative Lab is onze experimentele showcase van de nieuwste creatieve mogelijkheden. In dit format combineren we steeds twee essentiële elementen:
 
@@ -129,8 +118,6 @@ Recent gelanceerde relevante tools te highlighten
 Mogelijke combinaties van tools te suggereren
 Creatieve invalshoeken te schetsen
 
-De sectie dient als inspiratiebron voor het maken van verhalende content waarin we experimenteren met de nieuwste tools. We willen hiermee zowel de technische mogelijkheden als de praktische toepasbaarheid van nieuwe AI-tools laten zien. Belangrijk is dat je best uitgebreid mag antwoorden op Creative Lab potentieel. Uitgewerkte voorbeelden zijn erg belangrijk.
-
 Techdive (podcast)
 
 30-40 minuten discussie met Marc (host), Eelco en jij
@@ -145,8 +132,6 @@ Showcase van nieuwe/interessante tools
 Praktische demonstratie zonder te technisch te worden
 Voorbeelden: gen-AI Minecraft met Oasis, voice-overs met Elevenlabs
 
-Vereiste: minimaal 1 AI tool gebruiken
-
 Nieuwsbrief (Substack)
 
 Frequentie: tweewekelijks
@@ -154,21 +139,14 @@ Frequentie: tweewekelijks
 Inclusief video versie
 Focus op belangrijkste tech gebeurtenissen
 
-Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpassingen en aanvullen doen!
+Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpassingen!
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MACH8 AI & Tech Update Template</title>
-    <!-- 
-    MACH8 HUISSTIJL KLEUREN:
-    - Hoofdkleur (paars): #B5B3FF
-    - Accent (oranje): #FF7F5C 
-    - Achtergrond sections: #ffffff
-    - Text: #000000
-    -->
+    <title>MACH8 AI & Tech Update</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -211,10 +189,11 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
             align-items: center;
             font-weight: bold;
         }
-        .section-title .highlight {
+        .highlight {
             color: #FF7F5C;
+            font-weight: bold;
         }
-        .news-item {
+        .update-item {
             margin: 20px 0;
             padding: 15px;
             background-color: #ffffff;
@@ -232,13 +211,6 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
             border-radius: 4px;
             border: 1px solid #FF7F5C;
         }
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-            margin-top: 40px;
-        }
         .bullet-list {
             margin: 15px 0;
             padding-left: 20px;
@@ -247,19 +219,12 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
             margin-bottom: 10px;
             color: #333;
         }
-        .highlight {
-            color: #FF7F5C;
-            font-weight: bold;
-        }
-        .cta-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #FF7F5C;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-top: 10px;
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            margin-top: 40px;
         }
         @media only screen and (max-width: 600px) {
             .container {
@@ -280,94 +245,27 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
             <p>[WEEKNUMMER] - [DATUM]</p>
         </div>
 
-       <!-- CREATIVE LAB -->
-<div class="section">
-    <div class="section-title">
-        <span class="emoji">🎨</span><span class="highlight">Creative</span> Lab
-    </div>
-    
-    <div class="news-item">
-        <h3>This Week's Creative Inspiration 💡</h3>
-        
-        <!-- Content Creation Tools -->
-        <h4>🎬 Relevant Tools for Storytelling</h4>
-        <p><strong>Focus op tools die direct bijdragen aan content creatie:</strong></p>
-        <ul class="bullet-list">
-            <li>Video generatie (bijv. <span class="highlight">Runway, Pika, Sora</span>)</li>
-            <li>Video editing (bijv. <span class="highlight">DaVinci, Adobe Premiere</span>)</li>
-            <li>Audio tools (bijv. <span class="highlight">ElevenLabs, Descript</span>)</li>
-            <li>Visual effects (bijv. <span class="highlight">Adobe Firefly, Midjourney</span>)</li>
-            <li>3D/AR tools (bijv. <span class="highlight">Spline, Reality Composer</span>)</li>
-        </ul>
-
-        <!-- Creative Possibilities -->
-        <div class="idea-box">
-            <strong>Creative Lab potentie:</strong>
-            <ul class="bullet-list">
-                <li> Idee 1 voor een creative lab <span class="highlight">[tekst]</span></li>
-                <li> Idee 2 voor een creative lab<span class="highlight">[tekst]</span></li>
-            </ul>
-        </div>
-    </div>
-</div>
-        <!-- NEWS FLASH -->
+        <!-- MAIN SECTION -->
         <div class="section">
             <div class="section-title">
-                <span class="emoji">📰</span><span class="highlight">News</span> Flash
+                <span class="emoji">💡</span><span class="highlight">Tech & AI</span> Updates
             </div>
             
-            <!-- NEWS FLASH ITEM -->
-            <div class="news-item">
-                <h3>[Major News] 🌟</h3>
-                <p><strong>[Breaking development or launch]</strong></p>
+            <!-- TEMPLATE VOOR NIEUWE UPDATE -->
+            <div class="update-item">
+                <h3>[Onderwerp] 🌟</h3>
+                <p><strong>[Korte beschrijving van de update]</strong></p>
                 <ul class="bullet-list">
-                    <li>Primary <span class="highlight">[impact]</span></li>
-                    <li>Industry <span class="highlight">[changes]</span></li>
+                    <li>Belangrijkste <span class="highlight">[impact/verandering]</span></li>
+                    <li>Relevante <span class="highlight">[details/ontwikkelingen]</span></li>
                 </ul>
                 <div class="idea-box">
-                    <strong>News Flash idea:</strong> [Application or action]
+                    <strong>Inzicht:</strong> [Toepassing of actie voor MACH8]
                 </div>
             </div>
-        </div>
 
-        <!-- NEWS SHORT -->
-        <div class="section">
-            <div class="section-title">
-                <span class="emoji">📱</span><span class="highlight">News</span> Short
-            </div>
+            <!-- KOPIEER BOVENSTAANDE UPDATE-ITEM DIV VOOR MEER UPDATES -->
             
-            <!-- NEWS SHORT ITEMS -->
-            <div class="news-item">
-                <h3>Quick Updates 🔄</h3>
-                <ul class="bullet-list">
-                    <li><strong>[Update 1]:</strong> <span class="highlight">[key point]</span></li>
-                    <li><strong>[Update 2]:</strong> <span class="highlight">[key point]</span></li>
-                    <li><strong>[Update 3]:</strong> <span class="highlight">[key point]</span></li>
-                </ul>
-                <div class="idea-box">
-                    <strong>News Short takeaway:</strong> [Quick insight]
-                </div>
-            </div>
-        </div>
-
-        <!-- TECH DIVE -->
-        <div class="section">
-            <div class="section-title">
-                <span class="emoji">🔬</span><span class="highlight">Tech</span> Dive
-            </div>
-            
-            <!-- TECH DIVE ITEM -->
-            <div class="news-item">
-                <h3>[Technical Topic] Analysis ⚡</h3>
-                <p><strong>[Technical development or insight]</strong></p>
-                <ul class="bullet-list">
-                    <li>Technical <span class="highlight">[details]</span></li>
-                    <li>Implementation <span class="highlight">[approach]</span></li>
-                </ul>
-                <div class="idea-box">
-                    <strong>Tech Dive insight:</strong> [Technical conclusion]
-                </div>
-            </div>
         </div>
 
         <div class="footer">
@@ -379,28 +277,6 @@ Plaats je antwoord in de volgende email HTML template, waar nodig mag je aanpass
 </body>
 </html>
 `;
-
-//             const openAiResponse = await this.openai.chat.completions.create({
-//                 model: "o1-preview",
-//                 messages: [{ role: "user", content: prompt }],
-//                 temperature: 1,
-//             });
-
-//             const unprocessedEmail = openAiResponse.choices[0].message.content;
-
-// const promptemailformatting = `
-// Pas de head content toe aan de volgende email. 
-
-// Inhoud voor de mail:
-// ${unprocessedEmail}
-
-// -------- EINDE INHOUD --------
-
-
-// </html>
-
-
-// `;
             const OpenAiformatting = await this.openai.chat.completions.create({
                 model: "o1-preview",
                 messages: [{ role: "user", content: prompt }],
