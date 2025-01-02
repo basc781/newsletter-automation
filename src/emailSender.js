@@ -17,8 +17,8 @@ async function sendEmail(htmlContent) {
 
     const mailOptions = {
         from: process.env.GMAIL_USER,
-        to: 'julotvansanten@livewallgroup.com, bascouwenberg@livewallgroup.com', // Replace with your actual recipient email
-        subject: `Tech News Digest - Julot -  ${new Date().toLocaleDateString()}`,
+        to: 'julotvansanten@livewallgroup.com, bascouwenberg@livewallgroup.com, eelco@livewallgroup.com, milanbrock@livewallgroup.com, dionvanlitsenburg@livewallgroup.com, larshoeijmans@livewallgroup.com, aidangeggie@livewallgroup.com, dwikyvanbosstraten@livewallgroup.com, thijs@yourcrew.online, jarnovanoutvorst@livewallgroup.com', // Replace with your actual recipient email
+        subject: `Tech News AI Digest - MACH8 -  ${new Date().toLocaleDateString()}`,
         html: htmlContent
     };
 
