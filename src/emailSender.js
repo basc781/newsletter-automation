@@ -18,7 +18,7 @@ async function sendEmail(htmlContent) {
     const mailOptions = {
         from: process.env.GMAIL_USER,
         to: 'bascouwenberg@livewallgroup.com',
-        bcc: 'julotvansanten@livewallgroup.com, eelco@livewallgroup.com, milanbrock@livewallgroup.com, dionvanlitsenburg@livewallgroup.com, larshoeijmans@livewallgroup.com, aidangeggie@livewallgroup.com, dwikyvanbosstraten@livewallgroup.com, thijs@yourcrew.online, jarnovanoutvorst@livewallgroup.com, koen.w@100procent.email', // Replace with your actual recipient email
+        bcc: 'julotvansanten@livewallgroup.com, eelco@livewallgroup.com, milanbrock@livewallgroup.com, dionvanlitsenburg@livewallgroup.com, larshoeijmans@livewallgroup.com, aidangeggie@livewallgroup.com, dwikyvanbosstraten@livewallgroup.com, thijs@yourcrew.online, jarnovanoutvorst@livewallgroup.com, koen.w@100procent.email, julotvansanten@hotmail.com', // Replace with your actual recipient email
         subject: `Tech News AI Digest - MACH8 -  ${new Date().toLocaleDateString()}`,
         html: htmlContent
     };
