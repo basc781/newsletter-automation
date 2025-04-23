@@ -18,7 +18,7 @@ async function sendEmail(htmlContent) {
     const mailOptions = {
         from: process.env.GMAIL_USER,
         to: 'bascouwenberg@livewallgroup.com',
-        bcc: 'mattijspronk@livewallgroup.com, timvantriet@livewallgroup.com, wardlavrijsen@livewallgroup.com, tigodunk@livewallgroup.com, julotvansanten@livewallgroup.com, eelco@livewallgroup.com, milanbrock@livewallgroup.com, dionvanlitsenburg@livewallgroup.com, larshoeijmans@livewallgroup.com, aidangeggie@livewallgroup.com, dwikyvanbosstraten@livewallgroup.com, thijs@yourcrew.online, jarnovanoutvorst@livewallgroup.com, koen.w@100procent.email, julotvansanten@hotmail.com, nick@livewallgroup.com', // Add more cool peopl
+        bcc: 'mattijspronk@livewallgroup.com, timvantriet@livewallgroup.com, wardlavrijsen@livewallgroup.com, tigodunk@livewallgroup.com, julotvansanten@livewallgroup.com, eelco@livewallgroup.com, milanbrock@livewallgroup.com, dionvanlitsenburg@livewallgroup.com, larshoeijmans@livewallgroup.com, aidangeggie@livewallgroup.com, dwikyvanbosstraten@livewallgroup.com, thijs@yourcrew.online, jarnovanoutvorst@livewallgroup.com, koen.w@100procent.email, julotvansanten@hotmail.com, nick@livewallgroup.com, anne-marie@fitzroy.nl', // Add more cool peopl
         subject: `Tech News AI Digest - MACH8 -  ${new Date().toLocaleDateString()}`,
         html: htmlContent
     };
