@@ -3,7 +3,7 @@ const { DynamoDBDocumentClient, PutCommand, GetCommand, QueryCommand, DeleteComm
 const { DescribeTableCommand } = require('@aws-sdk/client-dynamodb');
 const { GetItemCommand } = require('@aws-sdk/client-dynamodb');
 
-// Initialiseer de DynamoDB client met credentials
+// Initialiseer de DynamoDB client met credentials aanpassingen
 const client = new DynamoDBClient({
     region: 'eu-north-1',
     credentials: {
