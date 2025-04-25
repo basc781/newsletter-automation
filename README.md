@@ -1,15 +1,30 @@
 # Newsletter Automation
 
-A Node.js-based newsletter automation system that scrapes, processes, and sends email newsletters. This project includes web scraping capabilities, email generation, and automated sending functionality.
+A Node.js-based newsletter automation system that intelligently processes your email newsletters. The system reads your inbox for newsletter subscriptions, uses AI to classify and identify relevant content, stores important items in a database, and automatically generates and sends weekly digest emails containing the most relevant news items from the past week.
 
 ## Features
 
+- Automated newsletter inbox monitoring
+- AI-powered content classification and relevance scoring
+- Weekly digest email generation
 - Web scraping with Puppeteer and Cheerio
 - Email processing and generation
 - Automated email sending
 - Database integration (SQLite and DynamoDB)
 - OpenAI integration for content processing
 - Winston logging system
+
+## How It Works
+
+1. **Newsletter Collection**: The system monitors your email inbox for newsletter subscriptions
+2. **Content Processing**: 
+   - Extracts content from incoming newsletters
+   - Uses AI to analyze and classify the relevance of each news item
+   - Stores relevant items in the database with metadata
+3. **Weekly Digest Generation**:
+   - Aggregates relevant news items from the past week
+   - Generates a personalized digest email
+   - Sends the digest to end users
 
 ## Prerequisites
 
