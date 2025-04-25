@@ -33,6 +33,11 @@ npm install
 3. Create a `.env` file in the root directory with your configuration:
 ```env
 # Add your environment variables here
+OPENAI_API_KEY=your_openai_api_key
+GMAIL_USER=your_gmail_address
+GMAIL_APP_PASSWORD=your_gmail_app_password
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 ```
 
 ## Project Structure
