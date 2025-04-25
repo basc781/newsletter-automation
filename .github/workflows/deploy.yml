@@ -1,4 +1,4 @@
-name: CI/CD Pipeline Email Generator
+name: CI/CD Pipeline
 
 on:
   push:
